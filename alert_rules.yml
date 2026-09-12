@@ -1,0 +1,32 @@
+groups:
+  - name: node_alerts
+    rules:
+      - alert: InstanceDown
+        expr: up{job="node"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Instance {{ $labels.instance }} is down"
+          description: "Node Exporter target {{ $labels.instance }} has been unreachable for over 1 minute."
+          runbook: "https://github.com/tesddev/monitoring/issues"
+
+      - alert: HighCPU
+        expr: 100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High CPU usage on {{ $labels.instance }}"
+          description: "CPU usage has been above 80% for 5 minutes (current value: {{ $value | printf \"%.1f\" }}%)."
+          runbook: "https://github.com/tesddev/monitoring/issues"
+
+      - alert: DiskSpaceLow
+        expr: 100 - ((node_filesystem_avail_bytes{mountpoint="/"} / node_filesystem_size_bytes{mountpoint="/"}) * 100) > 85
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Low disk space on {{ $labels.instance }}"
+          description: "Disk usage on / is above 85% (current value: {{ $value | printf \"%.1f\" }}%)."
+          runbook: "https://github.com/tesddev/monitoring/issues"

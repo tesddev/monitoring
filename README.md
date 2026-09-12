@@ -26,3 +26,9 @@ Then open http://localhost:9090 locally.
   `sum(increase(prometheus_http_requests_total[5m]))`
 
 See `screenshots/` for target status and query results.
+
+## Secrets
+
+`alertmanager.yml` uses `${SLACK_WEBHOOK_URL}` as a placeholder. On the server,
+the real webhook URL is configured in the deployed file and is never committed
+to this repository.
