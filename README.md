@@ -1,6 +1,6 @@
 # Monitoring — Prometheus & Node Exporter
 
-Stage 5 Task 5-2: metrics collection setup for `tes-devops.duckdns.org`.
+Metrics collection setup for `tes-devops.duckdns.org`.
 
 ## Components
 
